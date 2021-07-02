@@ -27,6 +27,6 @@ module.exports = {
 
 const throwDefaultFormattedError = (error) => {
   throw new Error(
-    `Sorry, there was an error: , ${error.statusCode} =  ${error.statusMessage}`
+    `Sorry, there was an error: , ${error.response.statusCode} =  ${error.response.statusMessage}`
   );
 };

@@ -2,10 +2,17 @@ const { ApolloServer, gql } = require("apollo-server-express");
 const express = require("express");
 const typeDefs = require("./graphql/schemas");
 const resolvers = require("./graphql/resolvers");
+const db = require("./db");
+const models = require("./models");
+
 // inject envs into global namespaace
 require("dotenv").config();
 // exxtact env variabes
 const port = process.env.PORT || 5000;
+const db_host = process.env.DB_HOST;
+
+// setup and connect to db
+db.connect(db_host);
 
 // start app
 const app = express();
@@ -16,6 +23,9 @@ const app = express();
 const graphQLserver = new ApolloServer({
   typeDefs: typeDefs,
   resolvers: resolvers,
+  context: () => {
+    return { models };
+  },
 });
 
 // apply graphQL to express / app
@@ -23,8 +33,6 @@ graphQLserver.applyMiddleware({
   app: app,
   path: "/api",
 });
-
-// setup and connect to db
 
 // home route
 app.get("/", (req, res) => res.send("hello"));

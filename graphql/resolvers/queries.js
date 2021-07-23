@@ -2,9 +2,12 @@ const got = require("got");
 const apiUrlForNames = "https://pokeapi.co/api/v2/pokemon/";
 
 module.exports = {
-  pokemon: async (parent, { name, id }, { models }) => {
+  pokemon: async (parent, { name, id, _id }, { models }) => {
     // check if in local db/cached
-    const pokemon = await models.Pokemon.findOne({ name }).exec();
+    const pokemon = await models.Pokemon.findOne({
+      $or: [{ id }, { name }, { _id }],
+    }).exec();
+
     console.log(pokemon);
 
     if (pokemon) {
@@ -19,7 +22,7 @@ module.exports = {
     let response;
 
     try {
-      response = await got(`${apiUrlForNames}${name || id}`);
+      response = await got(`${apiUrlForNames}${name || id || _id}`);
     } catch (error) {
       console.log(error);
       throwDefaultFormattedError(error);
@@ -29,6 +32,9 @@ module.exports = {
     const result = JSON.parse(response.body);
 
     // 3.5 cache the result in the local mongodb
+    console.log("before the result._id is ", result._id);
+    result._id = result.id;
+    console.log("after the result._id is ", result._id);
     await models.Pokemon.create(result);
     // 4. send the response to the client
     return result;
@@ -36,6 +42,13 @@ module.exports = {
   pokemonCount: async (parents, args, context) => {
     // return count of pokemon in db
     return await models.Pokemon.count().exec();
+  },
+
+  //Comments
+  pokemonComments: async (parent, { pokemonId }, { models }) => {
+    return await models.Comment.find({ pokemon_id: pokemonId }).sort(
+      { createdAt: -1 }.exec()
+    );
   },
 };
 

@@ -1,6 +1,14 @@
 const mongoose = require("mongoose");
 
 const pokemonSchema = new mongoose.Schema({
+  id: {
+    type: Number,
+    required: true,
+  },
+  _id: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -33,6 +41,7 @@ const pokemonSchema = new mongoose.Schema({
     type: Object,
     required: true,
   },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 // create a model from this schema

@@ -7,15 +7,40 @@ module.exports =
     # Queries
     type Query {
       # this query type is getting the pokemon type
-      pokemon(name: String, id: ID): Pokemon!
+      pokemon(name: String, id: ID, _id: ID): Pokemon!
       pokemonCount: Int!
+
+      # Comments
+      pokemonComments(pokemonId: ID!): [Comment]!
     }
 
     # Mutations
+    type Mutation {
+      #Comments
+      createComment(
+        pokemonId: ID!
+        author: String
+        text: String
+        upvotes: Int
+        downvotes: Int
+      ): Comment!
+
+      updateComment(
+        commentId: ID!
+        pokemonId: ID!
+        author: String
+        text: String
+        upvotes: Int
+        downvotes: Int
+      ): Comment!
+
+      deleteComment(commentId: ID!): Comment!
+    }
 
     # Types
     type Pokemon {
-      id: ID!
+      _id: ID!
+      id: ID
       name: String!
       base_experience: Int!
       height: Int!
@@ -24,6 +49,18 @@ module.exports =
       weight: Int!
       location_area_encounters: String!
       sprites: PokemonSprites!
+      comments: [ID!]
+    }
+
+    type Comment {
+      id: ID!
+      author: String
+      upvotes: Int
+      downvotes: Int
+      text: String!
+      pokemonId: ID!
+      createdAt: String!
+      updatedAt: String!
     }
 
     type PokemonSprites {

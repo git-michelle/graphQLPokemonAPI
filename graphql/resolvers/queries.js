@@ -32,9 +32,6 @@ module.exports = {
     const result = JSON.parse(response.body);
 
     // 3.5 cache the result in the local mongodb
-    console.log("before the result._id is ", result._id);
-    result._id = result.id;
-    console.log("after the result._id is ", result._id);
     await models.Pokemon.create(result);
     // 4. send the response to the client
     return result;
@@ -46,7 +43,7 @@ module.exports = {
 
   //Comments
   pokemonComments: async (parent, { pokemonId }, { models }) => {
-    return await models.Comment.find({ pokemon_id: pokemonId }).sort(
+    return await models.Comment.find({ pokemonId: pokemonId }).sort(
       { createdAt: -1 }.exec()
     );
   },

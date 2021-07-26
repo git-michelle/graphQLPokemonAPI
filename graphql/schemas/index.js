@@ -39,8 +39,9 @@ module.exports =
 
     # Types
     type Pokemon {
-      _id: ID!
-      id: ID
+      # _id is the mongo id, keep optional for initial search before pokemon added to db
+      _id: ID
+      id: ID!
       name: String!
       base_experience: Int!
       height: Int!

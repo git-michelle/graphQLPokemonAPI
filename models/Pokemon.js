@@ -1,16 +1,15 @@
 const mongoose = require("mongoose");
 
-const pokemonSchema = new mongoose.Schema({
+const PokemonSchema = new mongoose.Schema({
   id: {
     type: String,
-    required: true,
   },
   name: {
     type: String,
     required: true,
   },
   base_experience: {
-    type: String,
+    type: Number,
     required: true,
   },
   height: {
@@ -41,4 +40,4 @@ const pokemonSchema = new mongoose.Schema({
 });
 
 // create a model from this schema
-module.exports = mongoose.model("Pokemon", pokemonSchema);
+module.exports = mongoose.model("Pokemon", PokemonSchema);

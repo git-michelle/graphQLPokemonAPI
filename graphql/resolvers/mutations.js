@@ -33,13 +33,10 @@ module.exports = {
       text,
       upvotes,
       downvotes,
-    }).forEach(([k, v]) => {
-      if (v) commentUpdates[k] = v;
+    }).forEach(([key, value]) => {
+      if (value) commentUpdates[key] = value;
     });
 
-    commentUpdates["pokemonId"] = mongoose.types;
-
-    const update = { pokemonId, author, text, upvotes, downvotes };
     return await models.Comment.findOneAndUpdate(
       { _id: commentId },
       commentUpdates,

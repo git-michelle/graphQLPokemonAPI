@@ -19,8 +19,8 @@ module.exports =
       #Comments
       createComment(
         pokemonId: ID!
+        text: String!
         author: String
-        text: String
         upvotes: Int
         downvotes: Int
       ): Comment!
@@ -28,8 +28,8 @@ module.exports =
       updateComment(
         commentId: ID!
         pokemonId: ID!
+        text: String!
         author: String
-        text: String
         upvotes: Int
         downvotes: Int
       ): Comment!
@@ -50,7 +50,7 @@ module.exports =
       weight: Int!
       location_area_encounters: String!
       sprites: PokemonSprites!
-      comments: [ID!]
+      comments: [ID!]!
     }
 
     type Comment {

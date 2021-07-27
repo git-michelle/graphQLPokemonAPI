@@ -22,13 +22,15 @@ const CommentSchema = new mongoose.Schema(
       required: true,
       default: "",
     },
-    pokemon_id: {
+    pokemonId: {
       type: mongoose.Schema.Types.ObjectId,
       // ref to the pokemon model "Pokemon" specifically, to use its id
       ref: "Pokemon",
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 // generate model from the schema

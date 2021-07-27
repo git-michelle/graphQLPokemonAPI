@@ -36,16 +36,18 @@ module.exports = {
     // 4. send the response to the client
     return result;
   },
-  pokemonCount: async (parents, args, context) => {
+  pokemonCount: async (parents, args, { models }) => {
     // return count of pokemon in db
     return await models.Pokemon.count().exec();
   },
 
   //Comments
   pokemonComments: async (parent, { pokemonId }, { models }) => {
-    return await models.Comment.find({ pokemonId: pokemonId }).sort(
-      { createdAt: -1 }.exec()
-    );
+    return await models.Comment.find({
+      pokemonId: pokemonId,
+    })
+      .sort({ createdAt: -1 })
+      .exec();
   },
 };
 

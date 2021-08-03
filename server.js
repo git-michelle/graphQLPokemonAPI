@@ -23,8 +23,21 @@ const app = express();
 const graphQLserver = new ApolloServer({
   typeDefs: typeDefs,
   resolvers: resolvers,
-  context: () => {
-    return { models };
+  context: ({ req }) => {
+    const authHeader = req.headers.authorization;
+    let token = null;
+
+    if (
+      typeof authHeader === "string" &&
+      authHeader.toLowerCase().startsWith("bearer")
+    ) {
+      const split = authHeader.split(" ");
+      if (split.length === 2) {
+        token = split[1];
+      }
+    }
+
+    return { models, token };
   },
 });
 

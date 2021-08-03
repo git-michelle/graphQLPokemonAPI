@@ -4,6 +4,9 @@ const { gql } = require("apollo-server-express");
 module.exports =
   // Type definitions
   gql`
+    # Directives
+    directive @auth(roles: [String!]!) on FIELD_DEFINITION
+
     # Queries
     type Query {
       # this query type is getting the pokemon type
@@ -35,6 +38,11 @@ module.exports =
       ): Comment!
 
       deleteComment(commentId: ID!): Comment!
+
+      # Auth
+
+      signUp(username: String!, password: String!): String!
+      signIn(username: String!, password: String!): String!
     }
 
     # Types
@@ -73,5 +81,19 @@ module.exports =
       back_shiny: String!
       back_female: String!
       back_shiny_female: String!
+    }
+
+    # Auth
+    type User {
+      id: ID!
+      username: String!
+      comments: [Comment!]!
+      role: RoleEnum!
+    }
+
+    enum RoleEnum {
+      ANONYMOUS
+      MEMBER
+      ADMIN
     }
   `;

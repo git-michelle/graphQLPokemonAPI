@@ -4,6 +4,8 @@ const typeDefs = require("./graphql/schemas");
 const resolvers = require("./graphql/resolvers");
 const db = require("./db");
 const models = require("./models");
+// const helmet = require("helmet");
+const cors = require("cors");
 
 // inject envs into global namespaace
 require("dotenv").config();
@@ -11,11 +13,17 @@ require("dotenv").config();
 const port = process.env.PORT || 5000;
 const db_host = process.env.DB_HOST;
 
+// directives
+const schemaDirectives = require("./graphql/resolvers/directives");
+
 // setup and connect to db
 db.connect(db_host);
 
 // start app
 const app = express();
+
+// app.use(helmet());
+app.use(cors());
 
 // -----GraphQL section
 
@@ -23,6 +31,7 @@ const app = express();
 const graphQLserver = new ApolloServer({
   typeDefs: typeDefs,
   resolvers: resolvers,
+  schemaDirectives: schemaDirectives,
   context: ({ req }) => {
     const authHeader = req.headers.authorization;
     let token = null;

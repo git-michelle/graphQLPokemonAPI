@@ -11,7 +11,7 @@ module.exports =
     type Query {
       # this query type is getting the pokemon type
       pokemon(name: String, id: ID, _id: ID): Pokemon!
-      pokemonCount: Int!
+      pokemonCount: Int! @auth(roles: ["ADMIN", "MEMBER"])
 
       # Comments
       pokemonComments(pokemonId: ID!): [Comment]!
